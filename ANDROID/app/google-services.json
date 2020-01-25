@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "816817222392",
+    "firebase_url": "https://tamuhack-app.firebaseio.com",
+    "project_id": "tamuhack-app",
+    "storage_bucket": "tamuhack-app.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:816817222392:android:a7bb8b59fe76faee39010d",
+        "android_client_info": {
+          "package_name": "com.tamuhack.tamuhackairlines"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "816817222392-0qs07apuvm148s3r2fj3b5bq712hro6o.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.tamuhack.tamuhackairlines",
+            "certificate_hash": "d244083e6c371c3c91cf25a9635ddfbedf1e33dc"
+          }
+        },
+        {
+          "client_id": "816817222392-le3lgmo27lkajkca9cu3ij50drjvqtnd.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA_47cF7HpaAMY05TiwM0xK83iKvfMndIA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "816817222392-le3lgmo27lkajkca9cu3ij50drjvqtnd.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
