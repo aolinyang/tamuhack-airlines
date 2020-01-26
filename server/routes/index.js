@@ -15,6 +15,7 @@ app.use(bodyParser.json());
 const getLuggageRouter = require("./luggageStatus.js");
 const registerLuggageRouter = require("./registerLuggage.js");
 const changeStatusRouter = require("./changeStatus.js");
+const addFlightRouter = require("./addFlight.js");
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -43,5 +44,6 @@ app.use(function(req, res, next) {
 app.use("/getluggagestatus", getLuggageRouter);
 app.use("/registerluggage", registerLuggageRouter);
 app.use("/changestatus", changeStatusRouter);
+app.use("/addflight", addFlightRouter);
 
 app.listen(port);
