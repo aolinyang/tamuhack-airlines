@@ -3,16 +3,18 @@ if (process.env.NODE_ENV !== 'production') {
 }
   
 const bodyParser = require('body-parser');
-const cookieParser = require('cookie-parser');
+//const cookieParser = require('cookie-parser');
 const express = require('express');
 const app = express();
 const port = process.env.PORT || 5000;
 
-app.use(cookieParser());
+//app.use(cookieParser());
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
-const hashpwRouter = require("./hashpw.js");
+const getLuggageRouter = require("./luggageStatus.js");
+const registerLuggageRouter = require("./registerLuggage.js");
+const changeStatusRouter = require("./changeStatus.js");
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -38,6 +40,8 @@ app.use(function(req, res, next) {
     next();
 });
 
-app.use("/hashpw", hashpwRouter);
+app.use("/getluggagestatus", getLuggageRouter);
+app.use("/registerluggage", registerLuggageRouter);
+app.use("/changestatus", changeStatusRouter);
 
 app.listen(port);
