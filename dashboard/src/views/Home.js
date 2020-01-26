@@ -1,6 +1,7 @@
 import React from "react";
 import { ListGroup, ListGroupItem } from 'reactstrap';
-
+import fullnames from "./../airlinenames.js";
+import "./home.scss"
 
 import { Jumbotron,
          Container } from "reactstrap";
@@ -25,7 +26,7 @@ class Home extends React.Component {
                         })
                     }
                     this.setState({flights: flights})
-                } else {
+                }/* else {
                     this.setState({
                         flights: [
                             {airline: 'aa', number: 948},
@@ -33,7 +34,7 @@ class Home extends React.Component {
                             {airline: 'da', number: 302}
                         ]
                     })
-                }
+                }*/
 
             },
             (err) => {
@@ -42,25 +43,28 @@ class Home extends React.Component {
         )
     }
 
-    componentWillMount() {
-        this.getFlightData()
+    componentDidMount() {
+        this.getFlightData();
+        this.timer = setInterval(() => this.getFlightData(), 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
     state = {
-        flights: [
-            // dummy data
-            {airline: 'aa', number: 948},
-            {airline: 'ua', number: 548},
-            {airline: 'da', number: 302}
-        ]
+        flights: []
     }
 
     createFlights = () => {
         let flights = []
         for (let flight of this.state.flights) {
             flights.push(
-                <ListGroupItem onClick={e => window.location.href=`/airline?flight=${flight.airline}-${flight.number}`}>Airline: {flight.airline}; Number:{flight.number}</ListGroupItem>
-            )
+                <ListGroupItem onClick={e => window.location.href=`/airline?flight=${flight.airline}-${flight.number}`}>
+                    <p>Airline: {fullnames[flight.airline]}</p>
+                    <p>Flight Number: {flight.number}</p>
+                </ListGroupItem>
+            );
         }
         return flights
     }
@@ -68,10 +72,9 @@ class Home extends React.Component {
     render() {
         return(
             <Container>
-                <Jumbotron>
-                    <h1>HOME</h1>
-                </Jumbotron>
-
+                <div id="controlpanelhead">
+                    <h1>Control Panel</h1>
+                </div>
                 <ListGroup>
                     {this.createFlights()}
                 </ListGroup>

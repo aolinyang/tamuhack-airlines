@@ -1,5 +1,6 @@
 import React from "react";
 import { Container, ListGroup, ListGroupItem } from 'reactstrap';
+import "./airline.scss";
 
 class Airline extends React.Component {
     constructor(props) {
@@ -12,25 +13,31 @@ class Airline extends React.Component {
           .then(res => res.json())
           .then(
             (luggages) => {
-                this.setState({luggages})
-                return luggages
+                this.setState({luggages});
+                return luggages;
             },
             (err) => {
-                console.log(err)
+                console.log(err);
             }
         )
     }
 
-    componentWillMount() {
-        this.getLuggageData(window.location.search)
+    componentDidMount() {
+        console.log(window.location.search);
+        this.getLuggageData(window.location.search);
+        this.timer = setInterval(() => this.getLuggageData(window.location.search), 2000);
+    }
+
+    componentWillUnmount() {
+        clearInterval(this.timer);
     }
 
     createluggages = (luggages) => {
-        let luggageList = []
+        let luggageList = [];
         for (let luggage in luggages) {
-            luggageList.push(<ListGroupItem>Device's Name: {luggage}; Status:{luggages[luggage]}</ListGroupItem>)
+            luggageList.push(<ListGroupItem>Device's Name: {luggage}; Status:{luggages[luggage]}</ListGroupItem>);
         }
-        return luggageList
+        return luggageList;
     }
 
     render() {
@@ -38,7 +45,7 @@ class Airline extends React.Component {
             <Container>
                 <h1>Airline</h1>
 
-                <ListGroup>
+                <ListGroup className="listx">
                     {this.createluggages(this.state.luggages)}
                 </ListGroup>
             </Container>
