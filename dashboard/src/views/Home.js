@@ -15,15 +15,15 @@ class Home extends React.Component {
           .then(res => res.json())
           .then(
             (results) => {
-                if (!results) {
+                if (results != null) {
                     let flights = []
-                for (let result in results) {
-                    let [airline,number] = result.split('-')
-                    flights.push({
-                        airline,
-                        number
-                    })
-                }
+                    for (let result of results) {
+                        let [airline,number] = result.split('-')
+                        flights.push({
+                            airline,
+                            number
+                        })
+                    }
                     this.setState({flights: flights})
                 } else {
                     this.setState({
@@ -42,12 +42,13 @@ class Home extends React.Component {
         )
     }
 
-    componentDidMount() {
-        // this.getFlightData()
+    componentWillMount() {
+        this.getFlightData()
     }
 
     state = {
         flights: [
+            // dummy data
             {airline: 'aa', number: 948},
             {airline: 'ua', number: 548},
             {airline: 'da', number: 302}
