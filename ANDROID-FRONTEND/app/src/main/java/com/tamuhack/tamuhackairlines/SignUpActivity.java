@@ -1,6 +1,7 @@
 package com.tamuhack.tamuhackairlines;
 
 import android.os.Bundle;
+import android.os.StrictMode;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
@@ -15,6 +16,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 public class SignUpActivity extends MainActivity implements View.OnClickListener {
 
@@ -33,6 +37,13 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+
+        if (android.os.Build.VERSION.SDK_INT > 9)
+        {
+            StrictMode.ThreadPolicy policy = new
+                    StrictMode.ThreadPolicy.Builder().permitAll().build();
+            StrictMode.setThreadPolicy(policy);
+        }
 
         // Views
         mEmailField = findViewById(R.id.fieldEmail);
@@ -75,6 +86,11 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+                            Map<String, String> json = new LinkedHashMap<>();
+                            String emailPost = mEmailField.getText().toString();
+                            json.put("username", emailPost);
+                            String str = Poster.POST("http://tamuflights.tech:5000/registeruser", json);
+                            Log.v("Response", str);
                             updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
@@ -153,8 +169,8 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
 
             findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
 
-            TextView textViewToChange = findViewById(R.id.loggedInUserDisplay);
-            textViewToChange.setText(user.getEmail() + ", Is currently logged in!");
+           // TextView textViewToChange = findViewById(R.id.loggedInUserDisplay);
+           // textViewToChange.setText(user.getEmail() + ", Is currently logged in!");
 
         } else {
 
