@@ -62,6 +62,10 @@ public class MainActivity extends AppCompatActivity {
             Intent intent = new Intent(MainActivity.this, SignUpActivity.class);
             startActivity(intent);
         }
+        if (id == R.id.action_device_adder) {
+            Intent intent = new Intent(MainActivity.this, DeviceAdderActivity.class);
+            startActivity(intent);
+        }
         if (id == R.id.action_settings) {
             Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
             startActivity(intent);
