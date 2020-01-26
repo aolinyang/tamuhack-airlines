@@ -13,7 +13,7 @@ router.post("/", (req,res) => {
         if (!doc.exists) {
             res.status(201).send("flight not found");
             return;
-        } else {
+        } else { //checks in luggage regardless of whether user checked in on phone first
             db.collection('Flights').doc(docname).set(
                 data, {merge: true}
             );
