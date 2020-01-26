@@ -16,6 +16,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.iid.FirebaseInstanceId;
+import com.google.firebase.iid.InstanceIdResult;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -84,13 +86,45 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "createUserWithEmail:success");
+
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            /*
                             Map<String, String> json = new LinkedHashMap<>();
                             String emailPost = mEmailField.getText().toString();
                             json.put("username", emailPost);
                             String str = Poster.POST("http://tamuflights.tech:5000/registeruser", json);
                             Log.v("Response", str);
-                            updateUI(user);
+                            */
+
+                            FirebaseInstanceId.getInstance().getInstanceId()
+                                    .addOnCompleteListener(new OnCompleteListener<InstanceIdResult>() {
+                                        @Override
+                                        public void onComplete(@NonNull Task<InstanceIdResult> task) {
+                                            if (!task.isSuccessful()) {
+                                                Log.w(TAG, "getInstanceId failed", task.getException());
+                                                return;
+                                            }
+
+                                            // Get new Instance ID token
+                                            String token = task.getResult().getToken();
+
+                                            // Log and toast
+                                            String msg = getString(R.string.msg_token_fmt, token);
+                                            Log.d(TAG, msg);
+                                            Toast.makeText(SignUpActivity.this, msg, Toast.LENGTH_SHORT).show();
+
+                                            Map<String, String> json = new LinkedHashMap<>();
+                                            String emailPost = mEmailField.getText().toString();
+                                            json.put("username", emailPost);
+                                            json.put("token", token);
+                                            String str = Poster.POST("http://tamuflights.tech:5000/registeruser", json);
+                                            Log.v("Response", str);
+                                        }
+                                    });
+
+
+                           // updateUI(user);
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "createUserWithEmail:failure", task.getException());
