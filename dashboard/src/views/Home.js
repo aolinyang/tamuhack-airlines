@@ -58,7 +58,9 @@ class Home extends React.Component {
     createFlights = () => {
         let flights = []
         for (let flight of this.state.flights) {
-          flights.push(<ListGroupItem>Airline: {flight.airline}; Number:{flight.number}</ListGroupItem>)
+            flights.push(
+                <ListGroupItem onClick={e => window.location.href=`/airline?flight=${flight.airline}-${flight.number}`}>Airline: {flight.airline}; Number:{flight.number}</ListGroupItem>
+            )
         }
         return flights
     }

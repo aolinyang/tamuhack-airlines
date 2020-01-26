@@ -7,12 +7,12 @@ class Airline extends React.Component {
     }
 
     // TODO: change the url and fetch the data
-    getLuggageData = () => {
-        fetch("http://tamuflights.tech:5000/getallflights")
+    getLuggageData = (query) => {
+        fetch("http://tamuflights.tech:5000/getsingleflight"+query)
           .then(res => res.json())
           .then(
             (results) => {
-                console.log(results)
+                this.setState({luggages: results})
             },
             (err) => {
                 console.log(err)
@@ -21,25 +21,27 @@ class Airline extends React.Component {
     }
 
     componentDidMount() {
-        // this.getFlightData()
+        this.getLuggageData(window.location.search)
     }
 
     state = {
-        luggages: [
-            {name: "Bob's device", status: "onboard"},
-            {name: "deviceNull", status: "arrived"}
-        ]
     }
 
     createluggages = () => {
-        let luggages = []
-        for (let luggage of this.state.luggages) {
+        let luggages = {
+            "will46_box": "onboard",
+            "jason's luggage": "onboard",
+            "allen's bag": "onboard",
+            "Allen's 2nd bag": "awaiting boarding"
+        }
+        for (let luggage in luggages) {
           luggages.push(<ListGroupItem>Device's Name: {luggage.name}; Status:{luggage.status}</ListGroupItem>)
         }
         return luggages
     }
 
     render() {
+        console.log("URL",window.location.search)
         return(
             <Container>
                 <h1>Airline</h1>
