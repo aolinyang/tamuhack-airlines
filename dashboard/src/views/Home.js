@@ -60,7 +60,10 @@ class Home extends React.Component {
         let flights = []
         for (let flight of this.state.flights) {
             flights.push(
-                <ListGroupItem onClick={e => window.location.href=`/airline?flight=${flight.airline}-${flight.number}`}>
+                <ListGroupItem onClick={(e) => {
+                    clearInterval(this.timer);
+                    window.location.href=`/airline?flight=${flight.airline}-${flight.number}`;
+                }}>
                     <p>Airline: {fullnames[flight.airline]}</p>
                     <p>Flight Number: {flight.number}</p>
                 </ListGroupItem>
@@ -72,8 +75,8 @@ class Home extends React.Component {
     render() {
         return(
             <Container>
-                <div id="controlpanelhead">
-                    <h1>Control Panel</h1>
+                <div className="largeheading">
+                    <h1>CONTROL PANEL</h1>
                 </div>
                 <ListGroup>
                     {this.createFlights()}

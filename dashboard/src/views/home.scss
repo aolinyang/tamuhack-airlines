@@ -1,4 +1,8 @@
-#controlpanelhead {
-    padding: 5em auto;
+.largeheading {
+    margin: 3em auto;
     text-align: center;
+    h1 {
+        font-size: 5em;
+        letter-spacing: 15px;
+    }
 }

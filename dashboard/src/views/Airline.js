@@ -1,11 +1,17 @@
 import React from "react";
 import { Container, ListGroup, ListGroupItem } from 'reactstrap';
+import "./home.scss";
 import "./airline.scss";
+import fullnames from "./../airlinenames.js";
+const queryString = require('query-string');
 
 class Airline extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {}
+        const flight = queryString.parse(window.location.search).flight.split('-')[0];
+        this.state = {
+           flight: flight
+        }
     }
 
     getLuggageData = (query) => {
@@ -13,6 +19,7 @@ class Airline extends React.Component {
           .then(res => res.json())
           .then(
             (luggages) => {
+                console.log(luggages);
                 this.setState({luggages});
                 return luggages;
             },
@@ -23,7 +30,6 @@ class Airline extends React.Component {
     }
 
     componentDidMount() {
-        console.log(window.location.search);
         this.getLuggageData(window.location.search);
         this.timer = setInterval(() => this.getLuggageData(window.location.search), 2000);
     }
@@ -43,7 +49,9 @@ class Airline extends React.Component {
     render() {
         return(
             <Container>
-                <h1>Airline</h1>
+                <div className="largeheading">
+                    <h1>{fullnames[this.state.flight]}</h1>
+                </div>
 
                 <ListGroup className="listx">
                     {this.createluggages(this.state.luggages)}
