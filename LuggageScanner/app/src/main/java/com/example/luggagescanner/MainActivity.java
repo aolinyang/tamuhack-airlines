@@ -44,6 +44,7 @@ public class MainActivity extends AppCompatActivity {
     private String FLIGHT_NO = "225";
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
+
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
