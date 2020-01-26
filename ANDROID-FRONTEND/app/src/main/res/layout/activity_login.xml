@@ -1,5 +1,4 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -41,7 +40,9 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <EditText
                     android:id="@+id/fieldEmail"
@@ -69,7 +70,9 @@
                 android:layout_below="@+id/emailPasswordFields"
                 android:orientation="horizontal"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp">
+                android:paddingRight="16dp"
+                android:paddingEnd="16dp"
+                android:paddingStart="16dp">
 
                 <Button
                     android:id="@+id/emailSignInButton"
@@ -89,7 +92,9 @@
                 android:paddingLeft="16dp"
                 android:paddingRight="16dp"
                 android:visibility="gone"
-                android:weightSum="2.0">
+                android:weightSum="2.0"
+                android:paddingStart="16dp"
+                android:paddingEnd="16dp">
 
                 <Button
                     android:id="@+id/signOutButton"
