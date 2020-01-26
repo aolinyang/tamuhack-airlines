@@ -4,15 +4,16 @@ import { Container, ListGroup, ListGroupItem } from 'reactstrap';
 class Airline extends React.Component {
     constructor(props) {
         super(props);
+        this.state = {}
     }
 
-    // TODO: change the url and fetch the data
     getLuggageData = (query) => {
-        fetch("http://tamuflights.tech:5000/getsingleflight"+query)
+        fetch("http://tamuflights.tech:5000/getsingleflight" + query)
           .then(res => res.json())
           .then(
-            (results) => {
-                this.setState({luggages: results})
+            (luggages) => {
+                this.setState({luggages})
+                return luggages
             },
             (err) => {
                 console.log(err)
@@ -20,34 +21,25 @@ class Airline extends React.Component {
         )
     }
 
-    componentDidMount() {
+    componentWillMount() {
         this.getLuggageData(window.location.search)
     }
 
-    state = {
-    }
-
-    createluggages = () => {
-        let luggages = {
-            "will46_box": "onboard",
-            "jason's luggage": "onboard",
-            "allen's bag": "onboard",
-            "Allen's 2nd bag": "awaiting boarding"
-        }
+    createluggages = (luggages) => {
+        let luggageList = []
         for (let luggage in luggages) {
-          luggages.push(<ListGroupItem>Device's Name: {luggage.name}; Status:{luggage.status}</ListGroupItem>)
+            luggageList.push(<ListGroupItem>Device's Name: {luggage}; Status:{luggages[luggage]}</ListGroupItem>)
         }
-        return luggages
+        return luggageList
     }
 
     render() {
-        console.log("URL",window.location.search)
         return(
             <Container>
                 <h1>Airline</h1>
 
                 <ListGroup>
-                    {this.createluggages()}
+                    {this.createluggages(this.state.luggages)}
                 </ListGroup>
             </Container>
         );
