@@ -4,7 +4,7 @@ const db = require("./setupdb.js");
 
 router.post("/", (req,res) => {
 
-    db.collection("Customers").doc(req.body.username).set({"devices": [], "token": req.body.token});
+    db.collection("Customers").doc(req.body.username).set({"devices": [], "token": typeof req.body.token === 'undefined' ? req.body.token : 'undefined'});
     res.send("successfully added user");
 
 })
