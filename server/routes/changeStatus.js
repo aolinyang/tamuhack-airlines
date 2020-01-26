@@ -20,6 +20,7 @@ router.post("/", (req,res) => {
             db.collection('Flights').doc(docname).set(
                 data, {merge: true}
             );
+            
             res.status(200).send("success");
         }
     });

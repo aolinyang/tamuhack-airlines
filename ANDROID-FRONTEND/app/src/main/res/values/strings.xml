@@ -26,4 +26,7 @@
     </string>
     <string name="attachment_summary_off">Only download attachments when manually requested</string>
     <string name="action_signup">Sign Up</string>
+
+
+    <string name="msg_token_fmt" translatable="false">InstanceID Token: %s</string>
 </resources>
