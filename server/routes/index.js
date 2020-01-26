@@ -18,6 +18,7 @@ const changeStatusRouter = require("./changeStatus.js");
 const addFlightRouter = require("./addFlight.js");
 const registerUserRouter = require("./registerUser.js");
 const addDeviceRouter = require("./adddevice.js");
+const getUserDevicesRouter = require("./getUserDevices.js");
 
 app.use(function(req, res, next) {
     res.header("Access-Control-Allow-Origin", req.headers.origin);
@@ -49,5 +50,6 @@ app.use("/changestatus", changeStatusRouter);
 app.use("/addflight", addFlightRouter);
 app.use("/registeruser", registerUserRouter);
 app.use("/adddevice", addDeviceRouter);
+app.use("/getuserdevices", getUserDevicesRouter);
 
 app.listen(port);
