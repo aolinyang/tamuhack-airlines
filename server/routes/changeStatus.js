@@ -13,7 +13,10 @@ router.post("/", (req,res) => {
         if (!doc.exists) {
             res.status(201).send("flight not found");
             return;
-        } else { //checks in luggage regardless of whether user checked in on phone first
+        } else if (doc.data()[luggageName] === 'undefined') {
+            res.status(201).send("luggage not checked in yet");
+        }
+        else {
             db.collection('Flights').doc(docname).set(
                 data, {merge: true}
             );
