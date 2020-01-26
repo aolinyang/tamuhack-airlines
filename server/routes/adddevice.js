@@ -10,7 +10,9 @@ router.post("/", (req,res) => {
             res.status(201).send("username does not exist");
         } else {
             let cur_devices = username.data().devices;
-            cur_devices.push(req.body.devicename);
+            req.body.devicename.forEach((device) => {
+                cur_devices.push(device);
+            });
             db.collection("Customers").doc(req.body.username).set({"devices":cur_devices});
             res.send("successfully added device");
         }
