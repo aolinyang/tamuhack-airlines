@@ -13,7 +13,7 @@ router.post("/", (req,res) => {
         if (!doc.exists) {
             res.status(201).send("flight not found");
             return;
-        } else if (doc.data()[luggageName] === 'undefined') {
+        } else if (typeof doc.data()[luggageName] === 'undefined') {
             res.status(201).send("luggage not checked in yet");
         }
         else {
