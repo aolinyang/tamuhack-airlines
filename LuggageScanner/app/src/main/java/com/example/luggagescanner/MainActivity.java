@@ -44,7 +44,6 @@ public class MainActivity extends AppCompatActivity {
     private String FLIGHT_NO = "225";
 
     private final BroadcastReceiver receiver = new BroadcastReceiver() {
-
         @Override
         public void onReceive(Context context, Intent intent) {
             String action = intent.getAction();
@@ -54,30 +53,34 @@ public class MainActivity extends AppCompatActivity {
                 final String deviceName = device.getName();
                 final String deviceHardwareAddress = device.getAddress(); // MAC address
 
-                if (deviceName != null && "OP6T".equals(deviceName.toUpperCase())) {
-                    Log.i("Detected Larson", "Friendly Name: " + deviceName + ": MAC Address: " + deviceHardwareAddress);
-                    return;
-                }
-                else if ("64:a2:f9:ec:f2:8b".toUpperCase().equals(deviceHardwareAddress.toUpperCase())) {
+                boolean sendToServer = true;
 
-                    Log.i("Detected Larson", "Friendly Name: " + deviceName + ": MAC Address: " + deviceHardwareAddress);
-                }
-
-                if (true) {
-                    return;
-                }
-
-                Thread thread = new Thread() {
-                    public void run() {
-                        try {
-
+                if (sendToServer && deviceHardwareAddress != null) {
+                    Thread thread = new Thread() {
+                        public void run() {
                             detectLuggage(deviceHardwareAddress);
-                        } catch (IOException e) {
-                            Log.i("Failed to Upload: ", e.toString());
                         }
+                    };
+                    thread.start();
+                }
+
+                /*
+                if (deviceName != null) {
+                    if ("358456435678".equals(deviceName)) {
+                        Log.i("Found: ", deviceName + " " + deviceHardwareAddress);
+                        Thread thread = new Thread() {
+                            public void run() {
+                                try {
+                                    detectLuggage(deviceHardwareAddress);
+                                } catch (IOException e) {
+                                    Log.i("Failed to Upload: ", e.toString());
+                                }
+                            }
+                        };
+                        thread.start();
                     }
-                };
-                thread.start();
+                }
+                */
             }
         }
     };
@@ -85,36 +88,12 @@ public class MainActivity extends AppCompatActivity {
     //The set of luggage that has been successfully boarded on the aircraft
     private Set<String> boarded = new HashSet<>(300);
 
-    private static String surround(String str) {
-        return "\"" + str + "\"";
-    }
 
-    private static String getJSONString(Map<String, String> jsonMap) {
-        String result = "{";
-        for (Iterator<String> it = jsonMap.keySet().iterator(); it.hasNext();) {
-            String key = it.next();
-            result += surround(key) + ": " + surround(jsonMap.get(key));
-            if (it.hasNext()) {
-                result += ",";
-            } else {
-                break;
-            }
-        }
-        result += "}";
-        return result;
-    }
-
-    private void detectLuggage(String macAddress) throws IOException {
+    private void detectLuggage(String macAddress) {
         if (boarded.contains(macAddress)) {
+            Log.i("Duplicate Device: ", macAddress);
             return;
         }
-
-        URL url = new URL(REGISTER_LUGGAGE_URL);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setDoOutput(true);
-        connection.setDoInput(true);
 
         Map<String, String> jsonMap = new LinkedHashMap<>(4);
         jsonMap.put("company", COMPANY);
@@ -122,78 +101,30 @@ public class MainActivity extends AppCompatActivity {
         jsonMap.put("name", macAddress);
         jsonMap.put("newstatus", "onboard");
 
-        String result = getJSONString(jsonMap);
+        String response = Poster.POST(REGISTER_LUGGAGE_URL, jsonMap);
 
-        byte[] out = result.getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        connection.connect();
-
-        try (OutputStream os = connection.getOutputStream()) {
-            os.write(out);
-            os.flush();
-        }
-
-        StringBuilder response = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-            String responseLine = null;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
-        }
-
-        connection.disconnect();
-
-        if (response.length() == 0) {
-            Log.i("Detect Luggage: ", "() " + macAddress);
+        if (!response.startsWith("Error")) {
+            boarded.add(macAddress);
+            Log.i("Luggage Success: ", macAddress + " -> " + response);
         }
         else {
-            boarded.add(macAddress);
-            Log.i("Detect Luggage: ", response.toString() + " " + macAddress);
+            Log.i("Luggage Failed: ", macAddress + " -> " + response);
         }
     }
 
-    private void registerFlight() throws IOException {
-        URL url = new URL(ADD_FLIGHT_URL);
-        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-        connection.setRequestMethod("POST");
-        connection.setRequestProperty("Accept", "application/json");
-        connection.setDoOutput(true);
-        connection.setDoInput(true);
-
-        Map<String, String> jsonMap = new LinkedHashMap<>();
+    private void registerFlight() {
+        Map<String, String> jsonMap = new LinkedHashMap<>(4);
         jsonMap.put("company", COMPANY);
         jsonMap.put("flight", FLIGHT_NO);
 
-        String result = getJSONString(jsonMap);
+        String response = Poster.POST(ADD_FLIGHT_URL, jsonMap);
 
-        byte[] out = result.getBytes(StandardCharsets.UTF_8);
-        int length = out.length;
-
-        connection.setFixedLengthStreamingMode(length);
-        connection.setRequestProperty("Content-Type", "application/json; charset=UTF-8");
-        connection.connect();
-
-        try (OutputStream os = connection.getOutputStream()) {
-            os.write(out);
-            os.flush();
+        if (!response.startsWith("Error")) {
+            Log.i("Register Success: ", response);
         }
-
-        StringBuilder response = new StringBuilder();
-
-        try (BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream(), "utf-8"))) {
-            String responseLine = null;
-            while ((responseLine = br.readLine()) != null) {
-                response.append(responseLine.trim());
-            }
+        else {
+            Log.i("Register Failed: ", response);
         }
-
-        connection.disconnect();
-
-        Log.i("Register Flight: ", response.toString());
     }
 
     public void listen() {
@@ -249,17 +180,10 @@ public class MainActivity extends AppCompatActivity {
 
         Thread thread = new Thread() {
             public void run() {
-
-
-                try {
-                    registerFlight();
-                } catch (IOException e) {
-
-                }
+                registerFlight();
             }
         };
         thread.start();
-
 
         listen();
     }
