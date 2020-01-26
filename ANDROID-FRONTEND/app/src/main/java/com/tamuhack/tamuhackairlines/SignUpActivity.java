@@ -96,7 +96,7 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
         // Send verification email
         // [START send_email_verification]
         final FirebaseUser user = mAuth.getCurrentUser();
-        user.sendEmailVerification()
+        final Task<Void> sendEmailVerification = user.sendEmailVerification()
                 .addOnCompleteListener(this, new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -125,7 +125,7 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
 
         String email = mEmailField.getText().toString();
         String emailVerify = verifyEmailField.getText().toString();
-        if (TextUtils.isEmpty(email) || email != emailVerify) {
+        if (TextUtils.isEmpty(email) || !email.equals(emailVerify)) {
             mEmailField.setError("Required.");
             valid = false;
         } else {
@@ -134,7 +134,7 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
 
         String password = mPasswordField.getText().toString();
         String passwordVerify = verifyPasswordField.getText().toString();
-        if (TextUtils.isEmpty(password) || password != passwordVerify) {
+        if (TextUtils.isEmpty(password) || !password.equals(passwordVerify)) {
             mPasswordField.setError("Required.");
             valid = false;
         } else {
@@ -153,7 +153,7 @@ public class SignUpActivity extends MainActivity implements View.OnClickListener
 
             findViewById(R.id.verifyEmailButton).setEnabled(!user.isEmailVerified());
 
-            TextView textViewToChange = (TextView) findViewById(R.id.loggedInUserDisplay);
+            TextView textViewToChange = findViewById(R.id.loggedInUserDisplay);
             textViewToChange.setText(user.getEmail() + ", Is currently logged in!");
 
         } else {
