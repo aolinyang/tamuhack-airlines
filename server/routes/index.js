@@ -12,6 +12,8 @@ const port = process.env.PORT || 5000;
 app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
+const getAllFlightsRouter = require("./getAllFlights.js");
+const getSingleFlightRouter = require("./getSingleFlight.js");
 const getLuggageRouter = require("./luggageStatus.js");
 const registerLuggageRouter = require("./registerLuggage.js");
 const changeStatusRouter = require("./changeStatus.js");
@@ -44,6 +46,8 @@ app.use(function(req, res, next) {
     next();
 });
 
+app.use("/getallflights", getAllFlightsRouter);
+app.use("/getsingleflight", getSingleFlightRouter);
 app.use("/getluggagestatus", getLuggageRouter);
 app.use("/registerluggage", registerLuggageRouter);
 app.use("/changestatus", changeStatusRouter);
