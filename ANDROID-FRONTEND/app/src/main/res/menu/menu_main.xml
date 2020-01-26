@@ -10,6 +10,10 @@
         android:title="@string/action_signup"
         android:orderInCategory="125"
         app:showAsAction="never" />
+    <item android:id="@+id/action_device_adder"
+        android:title="Add Devices"
+        android:orderInCategory="145"
+        app:showAsAction="never" />
     <item android:id="@+id/action_settings"
         android:title="@string/action_settings"
         android:orderInCategory="175"
