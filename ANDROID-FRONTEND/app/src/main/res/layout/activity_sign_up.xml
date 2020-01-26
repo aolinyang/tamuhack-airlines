@@ -105,35 +105,6 @@
                     android:text="@string/create_account" />
             </LinearLayout>
 
-            <LinearLayout
-                android:id="@+id/signedInButtons"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerInParent="true"
-                android:orientation="horizontal"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:visibility="gone"
-                android:weightSum="2.0"
-                android:paddingEnd="16dp"
-                android:paddingStart="16dp">
-
-                <Button
-                    android:id="@+id/signOutButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="@string/sign_out" />
-
-                <Button
-                    android:id="@+id/verifyEmailButton"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1.0"
-                    android:text="@string/verify_email" />
-
-            </LinearLayout>
-
         </RelativeLayout>
 
     </LinearLayout>
