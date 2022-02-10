@@ -10,7 +10,7 @@
     "bootstrap": "^4.4.1",
     "mobx": "^5.15.3",
     "mobx-react": "^6.1.4",
-    "node-sass": "^4.13.1",
+    "node-sass": "^7.0.0",
     "query-string": "^6.10.1",
     "react": "^16.12.0",
     "react-dom": "^16.12.0",
